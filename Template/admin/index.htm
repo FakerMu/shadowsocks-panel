@@ -1,0 +1,109 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="chart-item-bg-2">
+						<div class="chart-item-num" data-count="this" data-from="0" data-to="98" data-suffix="%" data-duration="2">98%</div>
+						<div class="chart-item-desc">
+							<p class="col-lg-7">账户使用率.<br/>由每日在线进行统计站点账户的使用率，用于判断活跃度。</p>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">流量消耗</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>区间(单位:GB)</th>
+									<th width="20%">人数</th>
+									<th width="20%">占比</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0~10 GB</td>
+									<td>{$flow_num10}</td>
+									<td><php>
+										if($flow_num10>0){
+										echo round(($flow_num10/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
+									<td>
+										<div id="age-group-1" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>11~30 GB</td>
+									<td>{$flow_num30}</td>
+									<td><php>
+										if($flow_num30>0){
+										echo round(($flow_num30/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
+									<td>
+										<div id="age-group-2" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>31~100 GB</td>
+									<td>{$flow_num100}</td>
+									<td><php>
+										if($flow_num100>0){
+											echo round(($flow_num100/$userCount)*100,2);
+										} else {
+											echo "0.00";
+										}
+									</php>%</td>
+									<td>
+										<div id="age-group-3" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>100~N GB</td>
+									<td>{$flow_max}</td>
+									<td><php>
+										if($flow_max>0){
+										echo round(($flow_max/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
+									<td>
+										<div id="age-group-3" class="sparkline"></div>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+			</div>
+			
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="chart-item-bg-2">
+						<div class="chart-item-num num-sm" style="width: 370px;" data-count="this" data-from="0" data-to="{$money}" data-decimal="," data-suffix="$" data-duration="3">{$money}</div>
+						<div class="chart-item-env no-padding">
+							<div id="area-2" style="height: 150px; margin: 0"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+</div>
+<import template="/admin/_footer" />

@@ -4,19 +4,22 @@
  * A simple Shadowsocks management system
  * Author: Sendya <18x@loacg.com>
  */
+
 namespace Controller;
 
-use Core\Template;
 
-class Index
+use \Core\Response;
+
+/**
+ * Class Admin
+ * @Admin
+ * @Authorization
+ * @package Controller
+ */
+class Admin
 {
-
-    /**
-     * @Home
-     * @Route /Index
-     */
     public function index()
     {
-        //Template::setView('Home/index');
+        // Response::redirect("/Admin");
     }
 }

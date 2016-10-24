@@ -10,6 +10,8 @@ define('LIBRARY_PATH', ROOT_PATH . 'Library/');
 define('DATA_PATH', ROOT_PATH . 'Data/');
 @ini_set('display_errors', 'on');
 @ini_set('expose_php', false);
+@date_default_timezone_set('Asia/Shanghai');
+@ini_set('date.timezone', 'Asia/Shanghai');
 
 // Register composer
 require ROOT_PATH . 'Package/autoload.php';
@@ -28,6 +30,9 @@ if (ini_get('opcache.enable')) {
 
 // Initialize i18n engine
 Core\I18N::init();
+
+// Handler for user power
+Core\Filter::register(new Helper\LoginFilter());
 
 // Handler for json request
 Core\Filter::register(new Helper\JSON());

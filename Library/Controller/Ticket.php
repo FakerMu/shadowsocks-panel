@@ -7,16 +7,13 @@
 namespace Controller;
 
 use Core\Template;
+use Model\User;
 
-class Index
+class Ticket
 {
-
-    /**
-     * @Home
-     * @Route /Index
-     */
     public function index()
     {
-        //Template::setView('Home/index');
+        Template::putContext('user', User::getCurrent());
+        Template::setView('panel/ticket');
     }
 }

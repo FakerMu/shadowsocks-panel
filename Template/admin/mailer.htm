@@ -1,0 +1,210 @@
+<import template="/admin/_header"/>
+<import template="/admin/_content"/>
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title">邮件设置</h1>
+        <p class="description">系统的邮件发送方式。</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/setting">邮件设置</a></li>
+        </ol>
+    </div>
+</div>
+<section class="content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+
+                        <div class="panel-options">
+                            <a href="javascript:;" id="invite-add"><span>+</span></a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form action="" onsubmit="return false;">
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun" <if condition="$selectMail == 'MailGun'">checked</if>/> MailGun代发系统<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" <if condition="$selectMail == 'Smtp'">checked</if>/> SMTP方式<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="AliyunDirectMail" <if condition="$selectMail == 'AliyunDirectMail'">checked</if>/> 阿里云邮件推送<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CoreSend" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
+                            <br/>
+                            <br/>
+                            <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
+                            <button type="button" class="btn btn-success" id="mail-test">邮件发送测试</button>
+                            &nbsp;&nbsp;
+                            <button type="button" class="btn btn-success" id="mail-reset">重置邮件配置项</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</div>
+</div>
+<!-- Modal 6 (Long Modal)-->
+<div class="modal fade" id="modal-6">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <form role="form" id="form1" method="post" action="/admin/mailer/update.json" class="validate">
+                <input type="hidden" name="mail_mailer" id=mail_mailer" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">键</label>
+                                    <input type="text" class="form-control disable" disabled="disabled" name="option.k2" id="field-1" value="" placeholder="option.k">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-success">立即保存</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function ($) {
+        $("form#form1").validate({
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element) {
+                if (element.closest('.has-switch').length) {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if (element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function (result) {
+                        if (result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        showToastr(result.data.message, 0);
+                        $('#modal-6').modal('hide');
+                    },
+                    error: function (Xhr) {
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+        $("#save-setting").on('click', function () {
+            reset(false);
+            $.ajax({
+                url: "admin/mailer/saveSetting.json",
+                method: "POST",
+                dataType: "json",
+                data: {'mail_type': $("input[name='mail_type']:checked").val()},
+                success: function (result) {
+                    if (result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    $(".modal-body .row").empty();
+                    $('#modal-6 .modal-title').html('邮件系统 ' + result.data.mailer + " 设置");
+                    if (result.data.configs != null) {
+                        var jsonObj = result.data.configs;
+                        /*遍历Json串获取其属性*/
+                        for (var item in jsonObj) {
+                            var obj = jsonObj[item];
+                            var strVar = "<div class=\"col-md-12\"><div class=\"form-group\"><label for=\"field-"+item+"\" class=\"control-label\">配置项："+obj.key+"<\/label><input type=\"text\" class=\"form-control\" name=\"mail_"+obj.key+"\" id=\"field-"+item+"\" value=\""+obj.value+"\" placeholder=\""+obj.value+"\"><\/div><\/div>";
+                            $(".modal-body .row").append(strVar);
+                            console.log("key: " + obj.key + ", value: " + obj.value);
+                        }
+                    }
+                    $("input[name='mail_mailer']").val(result.data.mailer);
+
+                    showToastr(result.data.message, 0);
+                    reset(true);
+                },
+                error: function (jqXhr) {
+
+                }
+            });
+            $('#modal-6').modal('show', {backdrop: 'static'});
+        });
+        $("#mail-test").on('click', function() {
+            var btn = this;
+            $(btn).html("请求发送中，请稍等").attr('disabled', true);
+            $.ajax({
+                url: "admin/mailer/test.json",
+                method: "GET",
+                dataType: "json",
+                success: function(result) {
+                    if (result.code != 200) {
+                        $(btn).html("邮件发送测试").attr('disabled', false);
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    $(btn).html("邮件发送测试").attr('disabled', false);
+                    showToastr(result.data.message, 0);
+                },
+                error: function(jqXhr) {
+                    $(btn).html("邮件发送测试").attr('disabled', false);
+                }
+            });
+        });
+        $("#mail-reset").on('click', function() {
+            $.ajax({
+                url: "admin/mailer/reset.json",
+                method: "POST",
+                dataType: "json",
+                data: {'mail_type': $("input[name='mail_type']:checked").val()},
+                success: function(result) {
+                    if (result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
+                },
+                error: function(jqXhr) {
+                    showToastr("请求服务器错误", 0);
+                }
+            });
+        });
+    });
+</script>
+<import template="/admin/_footer"/>

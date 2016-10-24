@@ -1,0 +1,526 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title">用户管理</h1>
+        <p class="description">用户列表！</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/user">用户管理</a></li>
+        </ol>
+    </div>
+</div>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+                        <div class="panel-options">
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-xs-12" >
+                                    <div class="dataTables_filter" style="font-weight: normal;float: right;">
+                                        <label >&nbsp;&nbsp;端口:<input type="text" name="port" id="search_port" class="form-control input-sm" placeholder="">&nbsp;&nbsp;</label>
+                                        <label >&nbsp;&nbsp;邮箱:<input type="text" name="email" id="search_email" class="form-control input-sm" placeholder="@qq.com">&nbsp;&nbsp;</label>
+                                        <button class="btn btn-info btn-sm" style="margin-bottom: 0;margin-left: 10px;" id="search_but">查询</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="90px">端口</th>
+                                        <th width="160px">用户名</th>
+                                        <th>邮箱</th>
+                                        <th>套餐</th>
+                                        <th>已用/总流量</th>
+                                        <th>到期时间</th>
+                                        <th width="150px">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="dataTables_info" id="dataTables_info"></div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="dataTables_paginate paging_simple_numbers" style=" float: right;margin: 0">
+                                        <ul class="pagination"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+
+        </div>
+    </div>
+</section>
+</div>
+</div>
+<!-- Modal 6 (Long Modal)-->
+<div class="modal fade" id="modal-6">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改用户资料</h4>
+            </div>
+            <form role="form" id="form1" method="post" action="/admin/user/update.json" class="validate">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="user.uid" id="uid" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">昵称</label>
+
+                                    <input type="text" class="form-control" name="user.nickname" id="field-1"
+                                           placeholder="">
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-2" class="control-label">邮箱</label>
+
+                                    <input type="text" class="form-control" name="user.email" id="field-2"
+                                           placeholder="">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-3" class="control-label">密码</label>
+
+                                    <input type="text" class="form-control" name="user.password" id="field-3"
+                                           placeholder="不修改请留空">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-4" class="control-label">端口</label>
+
+                                    <input type="text" class="form-control" name="user.port" id="field-4"
+                                           placeholder="">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-5" class="control-label">SS连接密码</label>
+
+                                    <input type="text" class="form-control" name="user.sspwd" id="field-5" value=""
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-6" class="control-label">是否启用用户</label>
+
+                                    <select name="user.enable" id="field-6" class="form-control">
+                                        <option value="0">停用</option>
+                                        <option value="1">启用</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-7" class="control-label">账户等级</label>
+                                    <select name="user.plan" id="field-7" class="form-control">
+                                        <loop variable="$planList" key="$key" value="$plan">
+                                            <option value="{$key}">{$plan}</option>
+                                        </loop>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-8" class="control-label">邀请码</label>
+
+                                    <input type="text" class="form-control" name="user.invite_num" id="field-8"
+                                           value="0" placeholder="0 个">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-9" class="control-label">总流量(GB)</label>
+
+                                    <input type="text" class="form-control" name="user.transfer" id="field-9" value=""
+                                           placeholder="100 GB">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-10" class="control-label">已流量(GB)</label>
+
+                                    <input type="text" class="form-control" name="user.flow_down" id="field-10" value=""
+                                           placeholder="单位/GB">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-11" class="control-label">续费时间</label>
+
+                                    <input type="text" class="form-control" name="user.payTime" id="field-11" value=""
+                                           placeholder="">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-12" class="control-label">到期时间</label>
+
+                                    <input type="text" class="form-control" name="user.expireTime" id="field-12"
+                                           value="" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-13" class="control-label">是否为管理员</label>
+                                    <select name="user.isAdmin" id="field-13" class="form-control">
+                                        <option value="0">不是管理员</option>
+                                        <option value="1">是管理员</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-info">保存修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+        $("#search_but").on('click', function(){
+            getList();
+        });
+        getList();
+
+        $("form#form1").validate({
+            rules: {
+                'user.email': "required",
+                'user.port': "required",
+                'user.sspwd': "required",
+                'user.invite_num': "required",
+                'user.transfer': "required"
+            },
+            messages: {
+                'user.email': "邮箱必须填写",
+                'user.port': "端口必须填写",
+                'user.sspwd': "SS连接密码必须填写",
+                'user.invite_num': "邀请码数量必须填写",
+                'user.transfer': "总流量必须填写"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        if(result.data.error == 0) {
+                            changeTable(result.data.user);
+                        }
+                        showToastr(result.data.message, 0);
+                        jQuery('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+    });
+
+    function userRemove(userId) {
+        $.ajax({
+            url: "/admin/user/delete.json",
+            method: "POST",
+            dataType: "json",
+            data: {userId: userId},
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+                if(result.data.error == 0) {
+                    $("#user-" + userId).remove();
+                }
+                showToastr(result.data.message, 0);
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+    }
+    function userModify(userId) {
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
+        $.ajax({
+            url: "/admin/user/query.json",
+            method: "POST",
+            dataType: "json",
+            data: {uid: userId},
+            success: function(result){
+                if(result.code != 200){
+                    jQuery('#modal-6').modal('hide');
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+
+                if(result.data.error != 1 && result.data.user != null) {
+                    var user = result.data.user;
+                    $("input[name='user.uid']").val(user.uid);
+                    $("input[name='user.nickname']").val(user.nickname);
+                    $("input[name='user.email']").val(user.email);
+                    $("input[name='user.password']").val('');
+                    $("input[name='user.port']").val(user.port);
+                    $("input[name='user.sspwd']").val(user.sspwd);
+                    $("select[name='user.plan']").val(user.plan);
+                    $("input[name='user.invite_num']").val(user.invite_num);
+                    $("input[name='user.transfer']").val(user.transfer);
+                    $("input[name='user.flow_down']").val(user.flow_down);
+                    $("select[name='user.enable']").val(user.enable);
+                    $("input[name='user.payTime']").val(user.payTime);
+                    $("input[name='user.expireTime']").val(user.expireTime);
+                    $("#field-13").val(result.data.admin);
+                    jQuery('#modal-6 .modal-title').html('修改用户资料');
+                    reset(true);
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    }
+    function changeTable(data) {
+        var tid = $("tr#user-" + data.uid);
+        var newData = "<td>" + data.port + "</td>";
+        newData += "<td>"  + data.nickname + "</td>";
+        newData += "<td>" + data.email + "</td>";
+        newData += "<td>" + data.plan + "</td>";
+        newData += "<td>" + data.transfer + "</td>";
+        newData += "<td>" + data.expireTime + "</td>";
+        newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+data.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+data.uid+');">删除</a>' + "</td>";
+        $("tr#node-" + data.id).html(newData);
+
+    }
+    function getList(page) {
+        if(page == null)
+            page = 1;
+
+        var params = {'page': page};
+        if($("#search_port").val().length > 0 && $("#search_port").val()!='') {
+            params['port'] = $("#search_port").val();
+        }
+        if($("#search_email").val().length > 0 && $("#search_email").val()!='') {
+            params['email'] = $("#search_email").val();
+        }
+
+        $.ajax({
+            url: "/admin/user/GetList.json",
+            method: "GET",
+            dataType: "json",
+            data: params,
+            success: function(result) {
+                if(result.code != 200) {
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+                if(result.data.data.length >0) {
+                    var data = result.data;
+                    var table = $("table tbody");
+                    table.empty();
+                    for(var i=0; i<data.data.length; ++i) {
+                        var user = data.data[i];
+
+                        var newData = '<tr id="user-'+user.uid+'">';
+                        newData += '<td>'+user.port+'</td>';
+                        newData += '<td>'+user.nickname+'</td>';
+                        newData += '<td>'+user.email+'</td>';
+                        newData += '<td>'+ planName[user.plan] + '(' + user.plan +')' +'</td>';
+                        newData += '<td>'+ transferAuthShow(parseInt(user.flow_up,10) + parseInt(user.flow_down,10)) + '/' + transferAuthShow(user.transfer) +'</td>';
+                        newData += '<td>'+getTime(user.expireTime)+'</td>';
+                        newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
+                        newData += '</tr>';
+                        table.append(newData);
+                    }
+                    var itemNum = data.data.length;
+                    var startNum = (data.currentPage - 1) * data.pageSize + 1;
+                    $("#dataTables_info").html("显示 "+ startNum +" - " + (startNum + itemNum -1) + " 条数据, 共 "+data.totalPage+" 页");
+                    createPageNav(data.totalPage, data.currentPage);
+                }
+            }
+        });
+    }
+    function createPageNav(totalPage, currentPage) {
+        var pageNav = '<li class="paginate_button active" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage)+')">'+(currentPage)+'</a></li>';
+
+        for (var i = 1; i <= 3; i++) {
+            if (currentPage - i > 1) {
+                pageNav = '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage - i)+')">'+(currentPage - i)+'</a></li>' + pageNav;
+            }
+            if (currentPage + i < totalPage) {
+                pageNav = pageNav + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage + i)+')">'+(currentPage + i)+'</a></li>';
+            }
+        }
+
+        if (currentPage - 4 > 1) {
+            pageNav = '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>' + pageNav;
+        }
+
+        if (currentPage > 1) {
+            pageNav = '<li class="paginate_button previous ' + (currentPage==1?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">上一页</a></li>' + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(1)">1</a></li>' + pageNav;
+        }
+
+        if (currentPage + 4 < totalPage) {
+            pageNav = pageNav + '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>';
+        }
+
+        if (currentPage < totalPage) {
+            pageNav = pageNav + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>' + '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';
+        }
+        $(".pagination").html(pageNav);
+    }
+    function getTime(/** timestamp=0 **/) {
+        var ts = arguments[0] || 0;
+        var t,y,m,d,h,i,s;
+        t = ts ? new Date(ts*1000) : new Date();
+        y = t.getFullYear();
+        m = t.getMonth()+1;
+        d = t.getDate();
+        h = t.getHours();
+        i = t.getMinutes();
+        s = t.getSeconds();
+        return y+'-'+(m<10?'0'+m:m)+'-'+(d<10?'0'+d:d)+' '+(h<10?'0'+h:h)+':'+(i<10?'0'+i:i)+':'+(s<10?'0'+s:s);
+    }
+    function transferAuthShow(flow) {
+        var str = "";
+        var flow = parseInt(flow, 10);
+        if (flow > 1073741824) {
+            str = (flow / 1073741824).toFixed(2) + " GB";
+        } else if(flow > 1048576 ) {
+            str = (flow / 1048576).toFixed(2) + " MB";
+        } else if(flow > 1024) {
+            str = (flow / 1024).toFixed(2) + " KB";
+        } else {
+            str = '0 KB';
+        }
+        return str;
+    }
+
+    var planName = {
+    <php>
+    $i=0;
+    foreach($planList as $key=>$val) {
+        $i++;
+        $lev = $key . ':"' . $val . '"';
+        if($i < count($planList)) {
+            $lev.=',';
+        }
+        echo $lev;
+    }
+    </php>
+    };
+</script>
+<import template="/admin/_footer" />
